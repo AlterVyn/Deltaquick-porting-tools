@@ -1,6 +1,14 @@
 [
-  {
+    {
     "id": "mod_01",
+    "nombre": "TF2 Demoman Laughing Sound Effect for Players Leaving The Server.",
+    "descripcion": "TF2 Demoman Laughing Sound Effect for Players Leaving The Server.",
+    "autor": "steam",
+    "imagen_url": "https://images.steamusercontent.com/ugc/35568479906234405/7C70BB9654F3F81B304FC75DEF25299AB5D62913/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+    "descarga_url": "https://steamcommunity.com/sharedfiles/filedetails/?l=latam&id=3425774803"
+  },
+  {
+    "id": "mod_02",
     "nombre": "Susie [Dark World] - DELTARUNE (Coach)",
     "descripcion": "Susie [Dark World] - DELTARUNE (Coach).",
     "autor": "steam",
@@ -8,7 +16,7 @@
     "descarga_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3530788677"
   },
   {
-    "id": "mod_02",
+    "id": "mod_03",
     "nombre": "Tank Throws Incap Survivors / Special Infected / Witch",
     "descripcion": "Tank Throws Incap Survivors / Special Infected / Witch.",
     "autor": "xd",
@@ -16,7 +24,7 @@
     "descarga_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3815658696"
   },
   {
-    "id": "mod_03",
+    "id": "mod_04",
     "nombre": "Deltarune en español",
     "descripcion": "traduccion de deltarune al español.",
     "autor": "vyn_",
@@ -24,7 +32,7 @@
     "descarga_url": "https://deltaesp.site/"
   },
   {
-    "id": "mod_04",
+    "id": "mod_05",
     "nombre": "Deltarune multiplayer mod",
     "descripcion": "deltarune multiplayer mod example.",
     "autor": "Fulano",
