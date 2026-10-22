@@ -1,6 +1,14 @@
 [
   {
     "id": "mod_01",
+    "nombre": "Tank Throws Incap Survivors / Special Infected / Witch",
+    "descripcion": "Tank Throws Incap Survivors / Special Infected / Witch.",
+    "autor": "xd",
+    "imagen_url": "https://images.steamusercontent.com/ugc/17711531347500849991/A4CE7FE4AB9640FFE4DE9388482F9F6DE3682071/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+    "descarga_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3815658696"
+  },
+  {
+    "id": "mod_02",
     "nombre": "Deltarune en español",
     "descripcion": "traduccion de deltarune al español.",
     "autor": "vyn_",
@@ -8,7 +16,7 @@
     "descarga_url": "https://deltaesp.site/"
   },
   {
-    "id": "mod_02",
+    "id": "mod_03",
     "nombre": "Deltarune multiplayer mod",
     "descripcion": "deltarune multiplayer mod example.",
     "autor": "Fulano",
