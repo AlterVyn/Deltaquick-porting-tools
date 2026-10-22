@@ -9,10 +9,10 @@
   },
   {
     "id": "mod_02",
-    "nombre": "Texturas HD",
-    "descripcion": "Mejora los sprites del juego.",
+    "nombre": "Deltarune multiplayer mod",
+    "descripcion": "deltarune multiplayer mod example.",
     "autor": "Fulano",
-    "imagen_url": "https://raw.githubusercontent.com/BookerDev/Deltaquick-Mods/main/img/hd.png",
-    "descarga_url": "https://github.com/BookerDev/Deltaquick-Mods/releases/download/v1/texturas.zip"
+    "imagen_url": "https://images.gamebanana.com/img/ss/mods/sgi_common_thumbs_6853244b7b683_530.webp",
+    "descarga_url": "https://gamebanana.com/mods/601376"
   }
 ]
