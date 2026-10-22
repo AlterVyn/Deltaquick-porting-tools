@@ -1,6 +1,14 @@
 [
   {
     "id": "mod_01",
+    "nombre": "Susie [Dark World] - DELTARUNE (Coach)",
+    "descripcion": "Susie [Dark World] - DELTARUNE (Coach).",
+    "autor": "steam",
+    "imagen_url": "https://images.steamusercontent.com/ugc/13551328895436403830/14395A15ED358865D4E8EE0F3AA1BC87F1F8A86D/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
+    "descarga_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3530788677"
+  },
+  {
+    "id": "mod_02",
     "nombre": "Tank Throws Incap Survivors / Special Infected / Witch",
     "descripcion": "Tank Throws Incap Survivors / Special Infected / Witch.",
     "autor": "xd",
@@ -8,7 +16,7 @@
     "descarga_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3815658696"
   },
   {
-    "id": "mod_02",
+    "id": "mod_03",
     "nombre": "Deltarune en español",
     "descripcion": "traduccion de deltarune al español.",
     "autor": "vyn_",
@@ -16,7 +24,7 @@
     "descarga_url": "https://deltaesp.site/"
   },
   {
-    "id": "mod_03",
+    "id": "mod_04",
     "nombre": "Deltarune multiplayer mod",
     "descripcion": "deltarune multiplayer mod example.",
     "autor": "Fulano",
