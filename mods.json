@@ -1,11 +1,11 @@
 [
   {
     "id": "mod_01",
-    "nombre": "Deltarune Hard Mode",
-    "descripcion": "Aumenta la dificultad de los jefes.",
-    "autor": "Comunidad",
-    "imagen_url": "https://raw.githubusercontent.com/BookerDev/Deltaquick-Mods/main/img/hardmode.png",
-    "descarga_url": "https://github.com/BookerDev/Deltaquick-Mods/releases/download/v1/hardmode.zip"
+    "nombre": "Deltarune en español",
+    "descripcion": "traduccion de deltarune al español.",
+    "autor": "vyn_",
+    "imagen_url": "https://raw.githubusercontent.com/BookerRues9/Deltaquick-porting-tools/main/img/pepe.png",
+    "descarga_url": "https://deltaesp.site/"
   },
   {
     "id": "mod_02",
