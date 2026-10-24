@@ -33,11 +33,11 @@
   },
   {
     "id": "mod_05",
-    "nombre": "Deltarune en español",
-    "descripcion": "traduccion de deltarune al español.",
-    "autor": "vyn_",
-    "imagen_url": "https://raw.githubusercontent.com/BookerRues9/Deltaquick-porting-tools/main/img/pepe.png",
-    "descarga_url": "https://deltaesp.site/"
+    "nombre": "DeltaESP - ¡Parche en ESPAÑOL!",
+    "descripcion": "Capítulos 1-5 ¡YA DISPONIBLE!",
+    "autor": "DeltaESP - El Tío Vyn",
+    "imagen_url": "https://raw.githubusercontent.com/BookerRues9/Deltaquick-porting-tools/main/img/deltaesp.gif",
+    "descarga_url": "https://www.mediafire.com/folder/2ct8e39ut26g7/DeltaQuick+Espa%C3%B1ol/"
   },
   {
     "id": "mod_06",
