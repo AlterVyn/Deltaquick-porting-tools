@@ -178,8 +178,6 @@ The extension should now be injected into the selected game file.
   <img src="./photos/inyect.png" alt="UndertaleModTool Extension Injection" width="420">
 </p>
 
-*Suggested screenshot: Show the script execution process in UndertaleModTool.*
-
 ### 2. Modify the Chapter Selector
 
 Open the chapter selector's `game.droid` file in UndertaleModTool.
