@@ -1,4 +1,32 @@
+Where to Find Mods
+
+Once a mod has been added to the DeltaQuick mod catalog, you can find it directly in the app's Mods tab.
+
+photos/mods_tab.png
+
+Browse available modifications directly from DeltaQuick and find new content to install.
+
+Select a mod from the list and follow the in-app instructions to install it.
+
+[!NOTE]
+Mods must be added to the official mod catalog before they appear in this tab.
+
+
+
 # DeltaQuick Porting Guide
+
+<p align="center">
+  <strong>Port, package, and share Deltarune modifications for Android.</strong><br>
+  A practical guide to DeltaQuick's file structure, GameChange support, and mod distribution.
+</p>
+
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.bookerpuzzle.deltaquick&pcampaignid=web_share">Get DeltaQuick</a>
+  &nbsp; • &nbsp;
+  <a href="https://github.com/BookerRues9/Deltaquick-porting-tools">Porting Tools</a>
+  &nbsp; • &nbsp;
+  <a href="https://github.com/UnderminersTeam/UndertaleModTool">UndertaleModTool</a>
+</p>
 
 This guide explains how to port modifications to **DeltaQuick**, the Android launcher for Deltarune. It covers the internal file structure, the `game_change_android()` implementation, mod packaging, and distribution through the in-app Mods tab.
 
@@ -98,7 +126,9 @@ The following paths describe the intended directory layout. Replace `chapterX_wi
 
 The Save Manager allows you to manage the extracted game files used by DeltaQuick.
 
-![DeltaQuick Save Manager Overview](./photos/savemanager.png)
+<p align="center">
+  <img src="./photos/savemanager.png" alt="DeltaQuick Save Manager Overview" width="360">
+</p>
 
 ### Editing Game Files
 
@@ -130,9 +160,7 @@ This section explains how to integrate `game_change_android()` into your modific
 
 First, download the required UndertaleModTool script:
 
-**Download the GameChange Extension:** [Here](./scripts/game.csx)
-
-Replace the placeholder link with the actual download URL.
+**[Download the GameChange Extension](./scripts/game.csx)**
 
 Once you have downloaded the script:
 
@@ -144,7 +172,9 @@ Once you have downloaded the script:
 
 The extension should now be injected into the selected game file.
 
-![UndertaleModTool Extension Injection](./photos/inyect.png)
+<p align="center">
+  <img src="./photos/inyect.png" alt="UndertaleModTool Extension Injection" width="420">
+</p>
 
 *Suggested screenshot: Show the script execution process in UndertaleModTool.*
 
@@ -327,7 +357,9 @@ The chapter directories should also include any additional assets required by yo
 
 Only include chapters and files that your mod actually supports. If your modification requires a particular base game version or additional files, clearly document those requirements.
 
-![Example Mod ZIP Structure](./photos/mod_zip_structure.png)
+<p align="center">
+  <img src="./photos/mod_zip_structure.png" alt="Example Mod ZIP Structure" width="420">
+</p>
 
 ### 2. Submit Your Mod
 
@@ -345,9 +377,9 @@ Follow these steps:
 6. Open a pull request against the original repository.
 7. Wait for the changes to be reviewed and merged.
 
-**Mod catalog JSON file:** [https://github.com/BookerRues9/Deltaquick-porting-tools/blob/main/mods.json]
+**[Open the mod catalog (`mods.json`)](https://github.com/BookerRues9/Deltaquick-porting-tools/blob/main/mods.json)**
 
-**Example mod download:** [https://gamejolt.com/games/android-deltranslate-project/1086889]
+**[Example mod download](https://gamejolt.com/games/android-deltranslate-project/1086889)**
 
 > [!NOTE]
 > Follow the existing JSON schema exactly. The required fields and download URL format depend on the repository's current catalog implementation.
@@ -366,7 +398,9 @@ Once your ZIP archive is ready, you can install it directly through DeltaQuick.
 6. Wait for the installation to finish.
 7. Launch the game and test your modification.
 
-![DeltaQuick ZIP Installation](./photos/zip_installation.png)
+<p align="center">
+  <img src="./photos/zip_installation.png" alt="DeltaQuick ZIP Installation" width="360">
+</p>
 
 
 > [!WARNING]
