@@ -1,202 +1,210 @@
-# Deltaquick Porting Tools
+# DeltaQuick Porting Guide
 
-This guide contains the steps and tools necessary to port modifications to **Deltaquick** (Deltarune Android Launcher).
+This guide explains how to port modifications to **DeltaQuick**, the Android launcher for Deltarune. It covers the internal file structure, the `game_change_android()` implementation, mod packaging, and distribution through the in-app Mods tab.
+
 > [!IMPORTANT]
-> GUIDE UPDATED 25/10/2026**
-> This guide was updated on  25/10/2026 to describe and use the new optimizations in DeltaQuick 1.3.20 and later.
+> **Guide updated: October 25, 2026**
+>
+> This guide applies to **DeltaQuick 1.3.20 and later**. Previous versions are not compatible with the updated file structure described here.
+>
+> The new structure was designed to improve organization, simplify mod installation, and make it easier to support future chapters and modifications.
 
-> [!ATTENTION]
-> Update 1.3.20 changes the file system; previous versions of this guide will not work with version 1.3.20. This change was made to facilitate mod portability and ensure compatibility with future chapters.
+> [!NOTE]
+> This update also fixes several issues related to mod installation.
 
 > [!CAUTION]
-> **IMPORTANT:** This document is intended for **advanced users** who are familiar with modifying Deltarune/Undertale.
-> **IMPORTANT2:** This only works with mods for Deltarune Chapter 3 and 4, and Chapter 5 Latest Steam version.
->  **The demo and survey program versions are not compatible.**
-
----
+> **Compatibility requirements**
+>
+> This guide is intended for advanced users who are familiar with modifying Deltarune game files.
+>
+> - You must use DeltaQuick 1.3.20 or later.
+> - You must configure the game before installing or testing mods.
+> - The mod must use compatible Deltarune game files.
+> - The demo and survey program versions are not supported by this guide.
 
 > [!IMPORTANT]
-> This guide will be updated as new Deltarune chapters are released.
+> This guide will be updated as new chapters and features become available.
 >
-> If you encounter any bugs or crashes, please refer to the troubleshooting guide:
-> **[Crash Fixes](./crash%20fixes/README.md)**
->
----
+> If you encounter crashes or other issues, consult the [Crash Fixes Guide](./crash%20fixes/README.md).
+
 > [!TIP]
 > Want to add **Google Play Games achievements** to your mod?
 >
-> Follow the **[Google Play Games Setup Guide](./play%20games/README.md)**.
+> Follow the [Google Play Games Setup Guide](./play%20games/README.md).
+
+---
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Understanding the File System](#understanding-the-file-system)
+- [Adding GameChange Support](#adding-gamechange-support)
+  - [1. Inject the Extension](#1-inject-the-extension)
+  - [2. Modify the Chapter Selector](#2-modify-the-chapter-selector)
+  - [3. Modify the Chapter Switching Script](#3-modify-the-chapter-switching-script)
+- [Publishing Your Mod](#publishing-your-mod)
+  - [1. Package the Mod](#1-package-the-mod)
+  - [2. Submit Your Mod](#2-submit-your-mod)
+  - [3. Install the Mod](#3-install-the-mod)
+- [Troubleshooting](#troubleshooting)
+- [Credits](#credits)
+
+---
 
 ## Prerequisites
 
-To proceed, you will need the following tools:
+Before getting started, make sure you have the following tools:
 
-* [Deltarune PC Windows Steam Version For setting deltaquick](https://store.steampowered.com/app/1671210/DELTARUNE/)
-* [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool)
-* [Deltaquick](https://play.google.com/store/apps/details?id=com.bookerpuzzle.deltaquick&pcampaignid=web_share)
-* [UndertaleModTool Scripts](https://github.com/BookerRues9/Deltaquick-porting-tools/tree/main/scripts)
+- [Deltarune — Steam Version](https://store.steampowered.com/app/1671210/DELTARUNE/) — Required to configure DeltaQuick and obtain the compatible game files.
+- [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool) — Used to inspect and modify `game.droid` files.
+- [DeltaQuick](https://play.google.com/store/apps/details?id=com.bookerpuzzle.deltaquick&pcampaignid=web_share) — The Android launcher used to run and test your modifications.
+- [DeltaQuick Porting Tools](https://github.com/BookerRues9/Deltaquick-porting-tools/tree/main/scripts) — Contains the scripts required for the porting process.
+- **WinRAR or another ZIP utility** — Used to package your modification for distribution.
 
-**Requirement:** Ensure Deltaquick is configured and updated to **version 1.3.20** or higher.
+**Before continuing:** Configure DeltaQuick and ensure that the game runs correctly before attempting to install or test any modifications.
 
 ---
 
-## File System Overview
+## Understanding the File System
 
-To adapt modifications, you must understand how Deltaquick manages its internal storage. Deltaquick uses its own **Save Manager** to extract, delete, and copy files.
+Earlier versions of DeltaQuick used a less organized file structure, which made mod installation and compatibility more difficult.
+
+Starting with version 1.3.20, the internal structure was reorganized to make game files easier to manage and to simplify the integration of mods and future chapters.
+
+You can access the extracted files through the **Save Manager** in DeltaQuick.
 
 ### Directory Structure
 
-DeltaQuick stores all extracted game files inside its private application directory.
+The following paths describe the intended directory layout. Replace `chapterX_windows` with the appropriate chapter directory when working with a specific chapter.
 
 | Path | Description |
-|------|-------------|
-| `/data/user/0/com.bookerdev.deltaquick/files/deltarune_save_files/` | Stores Deltarune save files and game progress. |
-| `/data/user/0/com.bookerdev.deltaquick/files/game/` | Stores game data used for game fixes and updates. |
-| `/data/user/0/com.bookerdev.deltaquick/files/game/` | Loose base `game.droid` file. This file has priority over all `.pack` files. |
-| `/data/user/0/com.bookerdev.deltaquick/files/game/chapter1_windows/` → `/chapter5_windows/` | Contains the extracted assets for each Deltarune chapter. |
-| `/data/user/0/com.bookerdev.deltaquick/files/game/chapterX_windows/game.droid` | Loose chapter `game.droid` file.
-| `/data/user/0/com.bookerdev.deltaquick/files/game/mus/` | Global directory containing all music files used by the game. |
+| --- | --- |
+| `/data/user/0/com.bookerpuzzle.deltaquick/files/deltarune_save_files/` | Stores Deltarune save files and game progress. |
+| `/data/user/0/com.bookerpuzzle.deltaquick/files/game/` | Root directory containing the extracted game files and installed modifications. |
+| `/data/user/0/com.bookerpuzzle.deltaquick/files/game/game.droid` | Contains the base chapter selector. This file must remain in the root game directory. |
+| `/data/user/0/com.bookerpuzzle.deltaquick/files/game/chapterX_windows/` | Contains the extracted files for each chapter, including audio groups, music, JSON files, videos, and other assets. |
+| `/data/user/0/com.bookerpuzzle.deltaquick/files/game/chapterX_windows/game.droid` | Contains the main game data for the corresponding chapter. |
+| `/data/user/0/com.bookerpuzzle.deltaquick/files/game/mus/` | Contains the global music directory used by the game. |
 
-> [!NOTE]
-> DeltaQuick loads game files using the following priority:
+> [!IMPORTANT]
+> **Do not confuse the two types of `game.droid` files.**
 >
-> 1. Chapter APK packs located in `/files/packs/`
-> 2. `chapterX_windows/game.droid`
-> 3. `game.droid` (root directory)
+> - `game/game.droid` is the base chapter selector.
+> - `game/chapterX_windows/game.droid` contains the game data for an individual chapter.
 >
-> If a chapter pack exists, DeltaQuick will always load it first. Loose `game.droid` files are only used when the corresponding pack is not available.
+> Both have different purposes and must be placed in their correct locations.
 
-> [!TIP]
-> For older or lower-end devices that use **eMMC storage**, it is recommended to use loose `game.droid` files instead of APK packs.
->
-> Loading assets directly from loose files reduces storage overhead and can improve loading times on slower flash memory.
+### Save Manager Overview
 
-> [!TIP]
-> For devices with **UFS storage (UFS 2.x, UFS 3.x, or newer)**, using chapter APK packs is recommended.
->
-> UFS storage provides significantly faster random read performance, so the difference in loading speed is negligible while keeping all chapter files neatly organized inside the packs.
+The Save Manager allows you to manage the extracted game files used by DeltaQuick.
 
-<img src="./photos/save_manager.png" alt="Save Manager Overview" width="400">
+![DeltaQuick Save Manager Overview](./photos/save_manager.png)
+
+*Suggested screenshot: Replace `./photos/save_manager.png` with the actual path of your screenshot if it differs.*
+
+### Editing Game Files
+
+To modify a `game.droid` file, use UndertaleModTool.
+
+1. Open UndertaleModTool.
+2. Select **File > Open**.
+3. Navigate to the appropriate directory.
+4. Select the `game.droid` file you want to modify.
+5. Make your changes and save the modified file.
+
+Make sure you edit the correct file: the root chapter selector or the `game.droid` file belonging to an individual chapter.
 
 ---
 
-## Replacing `game.droid` Files
+## Adding GameChange Support
 
-Each Deltarune chapter is loaded as an individual APK pack.
+This section explains how to integrate `game_change_android()` into your modification.
 
-### Supported Packs
+> [!IMPORTANT]
+> Before continuing, check the **Disable Native GameChange (Only for Devs)** checkbox in DeltaQuick.
+>
+> - **Checkbox disabled:** Add `game_change_android()` to the chapter selector and to every chapter's `game.droid`.
+> - **Checkbox enabled:** Add `game_change_android()` only to the individual chapter `game.droid` files.
+>
+> Make sure you understand which configuration you are using before proceeding.
 
-| Pack | Description |
-|------|-------------|
-| `selector.pack` | Chapter Select |
-| `chapter1_windows.pack` | Chapter 1 |
-| `chapter2_windows.pack` | Chapter 2 |
-| `chapter3_windows.pack` | Chapter 3 |
-| `chapter4_windows.pack` | Chapter 4 |
-| `chapter5_windows.pack` | Chapter 5 |
+### 1. Inject the Extension
 
-> [!NOTE]
-> These packs are generated automatically after selecting your Deltarune installation folder in DeltaQuick for the first time.
+First, download the required UndertaleModTool script:
 
-### 2. Modification Process
+**[Download the GameChange Extension](LINK_TO_EXTENSION_HERE)**
 
-1. **Extraction:** Open **Save Manager**, long-press the desired APK, and select **Extract**. Transfer the APK to your PC.
-2. **Decompilation:** Open the APK with **APK Editor Studio**.
-3. **Open Contents:** Click the **Open Contents** button to access the internal files.
-   <br><img src="./photos/open_content.png" alt="APK Editor Studio Button" width="500">
-4. **Replacement:** Navigate to the `assets` folder.
-   <br><img src="./photos/assets.png" alt="Assets Folder Location" width="500">
-   <br>Inside the folder, replace the existing `game.droid` with your modified version.
-   <br><img src="./photos/assets_files.png" alt="Inside Assets Folder" width="500">
-5. **Rebuilding:** Click **Save APK** in APK Editor Studio.
-6. **Deployment:** Transfer the modified APK back to your phone. In the Save Manager's `packs` folder, press **Load Files** and select your modified APK.
-   * *Note: The filename must remain identical to the original (e.g., chapter4_windows.apk).*
+Replace the placeholder link with the actual download URL.
 
-## Technical Adaptation (UndertaleModTool)
+Once you have downloaded the script:
 
-These modifications are mandatory for the game to function correctly on Android.
+1. Open UndertaleModTool.
+2. Load the `game.droid` file you want to modify.
+3. Navigate to **Scripts > Run Other Script**.
+4. Select the downloaded script.
+5. Confirm the operation and wait for the script to finish.
 
-### 1. Script Injection
-Open your `game.droid` and run the following scripts via `Scripts -> Run Other Script`:
-* `tools.csx`: Adds essential tools.
-* `FIX_AUDIO.csx`: Fixes SFX (must be applied to all files EXCEPT Chapter Select).
+The extension should now be injected into the selected game file.
 
-### 2. External Directory Setup
-In **Chapters 1 through 5**, navigate to `obj_initializer2_Create_0` and add:
+![UndertaleModTool Extension Injection](./photos/gamechange_injection.png)
+
+*Suggested screenshot: Show the script execution process in UndertaleModTool.*
+
+### 2. Modify the Chapter Selector
+
+Open the chapter selector's `game.droid` file in UndertaleModTool.
+
+Locate the following script:
+
+`obj_CHAPTER_SELECT_Create_0`
+
+Find the section that switches between operating systems and add the Android case as shown below.
+
+Replace the relevant operating-system switch with this implementation:
 
 ```gml
-if (os_type == os_android)
-    global.savepath = init_external_dir();
-else
-    global.savepath = game_save_id;
-```
-3. Sound Initialization Fix
-In Chapters 1 through 4, locate the script gml_GlobalScript_snd_init and replace it with:
-```gml
-function snd_init(arg0)
+switch (os_type)
 {
-    var dir = "mus/";
-    
-    if (global.launcher)
-    {
-        if (os_type == os_android)
-            dir = global.savepath + "mus/";
-        else
-            dir = working_directory + "../mus/";
-    }
-    
-    if (os_type == os_android)
-        dir = global.savepath + "mus/";
-    else
-        dir = working_directory + "../mus/";
-    
-    initsongvar = dir + arg0;
-    _mystream = audio_create_stream(initsongvar);
-    _astream = instance_create(0, 0, obj_astream);
-    _astream.mystream = _mystream;
-    return _mystream;
+    case os_windows:
+        game_change("/chapter" + chapstring + "_windows", "-game data.win" + parameters);
+        break;
+
+    case os_ps4:
+        game_change("", "-game /app0/games/chapter" + chapstring + "_ps4/game.win" + parameters);
+        break;
+
+    case os_ps5:
+        game_change("", "-game /app0/games/chapter" + chapstring + "_ps5/game.win" + parameters);
+        break;
+
+    case os_macosx:
+        game_change("chapter" + chapstring + "_mac", parameters);
+        break;
+
+    case os_android:
+        game_change_android("chapter" + chapstring + "_windows");
+        break;
 }
 ```
-4. Language Loading Fix
-In all chapters, find scr_84_load_json and replace the existing path logic with:
 
-```gml
-var name = "lang_" + global.lang + ".json";
-    var orig_filename = working_directory + name;
-    var new_filename = working_directory + name;
-    var filename = orig_filename;
-    var type = "orig";
-    var orig_map = scr_84_load_map_json(orig_filename);
-```
-5. Black Screen Fix (Startup)
-In obj_initializer2_Step_0, replace the audio group check:
-Before:
-```gml
-if (audio_group_is_loaded(1))
-```
-After:
-```gml
-if (os_type == os_android || os_type == os_windows)
-```
-Chapter Switching (game_change)
-1. Chapter Select Configuration
-In CHAPTER_SELECT (obj_CHAPTER_SELECT_Create_0), add the Android case:
-```gml
-case os_macosx:
-    game_change("chapter" + chapstring + "_mac", parameters);
-    break;
+The Android case uses `game_change_android()` to switch to the selected chapter's directory inside DeltaQuick.
 
-case os_android:
-    game_change_android("chapter" + chapstring + "_windows");
-    break;
-```
-2. Universal Chapter Switch Script
-Replace the entire content of gml_GlobalScript_scr_chapterswitch with:
+> [!NOTE]
+> Keep the existing platform-specific cases intact. The Android implementation is intended to add Android support without removing the existing platform behavior.
+
+### 3. Modify the Chapter Switching Script
+
+For the individual chapters, open the appropriate chapter's `game.droid` file and locate the global script:
+
+`gml_GlobalScript_scr_chapterswitch`
+
+Replace the existing `scr_chapterswitch` implementation with the following code:
+
 ```gml
 function scr_chapterswitch(arg0 = 0)
 {
     var parameters = get_chapter_switch_parameters();
-    
+
     if (arg0 == 0)
     {
         if (scr_is_switch_os())
@@ -210,15 +218,19 @@ function scr_chapterswitch(arg0 = 0)
                 case os_windows:
                     game_change("/../", "-game data.win" + parameters);
                     break;
+
                 case os_ps4:
                     game_change("", "-game /app0/games/game.win" + parameters);
                     break;
+
                 case os_ps5:
                     game_change("", "-game /app0/games/game.win" + parameters);
                     break;
+
                 case os_macosx:
                     game_change("..", parameters);
                     break;
+
                 case os_android:
                     game_change_android("");
                     break;
@@ -228,7 +240,9 @@ function scr_chapterswitch(arg0 = 0)
     else
     {
         var chapstring = string(arg0);
-        
+
+        show_debug_message("Attempting to launch Chapter " + string(arg0));
+
         if (scr_is_switch_os())
         {
             game_change("rom:/chapter" + chapstring + "_switch/", parameters);
@@ -240,15 +254,19 @@ function scr_chapterswitch(arg0 = 0)
                 case os_windows:
                     game_change("/../chapter" + chapstring + "_windows", "-game data.win" + parameters);
                     break;
+
                 case os_ps4:
                     game_change("", "-game /app0/games/chapter" + chapstring + "_ps4/game.win" + parameters);
                     break;
+
                 case os_ps5:
                     game_change("", "-game /app0/games/chapter" + chapstring + "_ps5/game.win" + parameters);
                     break;
+
                 case os_macosx:
                     game_change("../chapter" + chapstring + "_mac", parameters);
                     break;
+
                 case os_android:
                     game_change_android("chapter" + chapstring + "_windows");
                     break;
@@ -256,93 +274,151 @@ function scr_chapterswitch(arg0 = 0)
         }
     }
 }
-
-```
-Chapter 3 Video Fix
-To fix the video loading for the Tenna sequence, navigate to obj_ch3_couch_video_Create_0 and update the call:
-```gml
-video_open(global.savepath + "chapter3_windows/vid/" + file_name + ".mp4");
 ```
 
-## Save File Fix
-
-By default, Deltarune attempts to read and write save files using the original desktop paths. To ensure that **Chapter Select** and **Chapters 1–5** correctly share the same save directory on Android, update the following scripts.
-
-### 1. `gml_GlobalScript_ossafe_ini_open`
-
-Replace the save path with:
-
-```gml
-ini_open(global.savepath + "Deltarune_Save_Files/" + arg0);
-```
-
----
-
-### 2. `gml_GlobalScript_ossafe_file_text_open_read`
-
-Replace the desktop path with:
-
-```gml
-if (!global.is_console)
-{
-    return file_text_open_read(global.savepath + "Deltarune_Save_Files/" + arg0);
-}
-```
-
----
-
-### 3. `gml_GlobalScript_ossafe_file_text_open_write`
-
-Replace the desktop path with:
-
-```gml
-if (!global.is_console)
-{
-    return file_text_open_write(global.savepath + "Deltarune_Save_Files/" + arg0);
-}
-```
-
----
-
-### 4. `gml_GlobalScript_ossafe_file_exists`
-
-Replace the desktop path with:
-
-```gml
-if (!global.is_console)
-{
-    return file_exists(global.savepath + "Deltarune_Save_Files/" + arg0);
-}
-```
-
----
-
-### 5. `gml_GlobalScript_ossafe_file_delete`
-
-Replace the desktop path with:
-
-```gml
-if (!global.is_console)
-{
-    return file_delete(global.savepath + "Deltarune_Save_Files/" + arg0);
-}
-```
+Apply the changes to each chapter that you intend to support.
 
 > [!IMPORTANT]
-> Apply these changes to **Chapter Select** and **every Deltarune chapter (1–5)**.
+> Ensure that the extension has been injected into every required `game.droid` file. Otherwise, calls to `game_change_android()` may fail when the game attempts to switch chapters.
+
+---
+
+## Publishing Your Mod
+
+Once your modification has been implemented and thoroughly tested, you can package it for distribution through DeltaQuick.
+
+### 1. Package the Mod
+
+Prepare the files that will be included in your mod archive.
+
+Select the following files and directories:
+
+- `game.droid`
+- `chapter1_windows/`
+- `chapter2_windows/`
+- `chapter3_windows/`
+- `chapter4_windows/`
+- `chapter5_windows/`
+
+Compress the selected files into a ZIP archive named:
+
+`mymod.zip`
+
+You can use WinRAR, 7-Zip, or any other ZIP utility.
+
+**Important:** The archive must contain the files and directories directly at its root, rather than placing everything inside an additional enclosing folder.
+
+Expected archive structure:
+
+```text
+mymod.zip
+├── game.droid
+├── chapter1_windows/
+│   └── game.droid
+├── chapter2_windows/
+│   └── game.droid
+├── chapter3_windows/
+│   └── game.droid
+├── chapter4_windows/
+│   └── game.droid
+└── chapter5_windows/
+    └── game.droid
+```
+
+The chapter directories should also include any additional assets required by your modification, such as audio, JSON files, and videos.
+
+Only include chapters and files that your mod actually supports. If your modification requires a particular base game version or additional files, clearly document those requirements.
+
+![Example Mod ZIP Structure](./photos/mod_zip_structure.png)
+
+*Suggested screenshot: Show the contents of the completed ZIP archive.*
+
+### 2. Submit Your Mod
+
+To make your modification appear in DeltaQuick's **Mods** tab, you must add an entry for it to the repository's mod catalog JSON file and submit a pull request.
+
+**Repository:** [DeltaQuick Porting Tools](https://github.com/BookerRues9/Deltaquick-porting-tools)
+
+Follow these steps:
+
+1. Fork the repository on GitHub.
+2. Locate the JSON file used to register mods in the repository.
+3. Add a catalog entry for your modification, following the existing entries and their required fields.
+4. Provide the correct download URL and any other metadata required by the catalog.
+5. Commit and push your changes to your fork.
+6. Open a pull request against the original repository.
+7. Wait for the changes to be reviewed and merged.
+
+**Mod catalog JSON file:** [INSERT_JSON_FILE_LINK_HERE]
+
+**Example mod download:** [INSERT_MOD_DOWNLOAD_LINK_HERE]
+
+> [!NOTE]
+> Follow the existing JSON schema exactly. The required fields and download URL format depend on the repository's current catalog implementation.
 >
-> These modifications ensure that all chapters use the same Android save directory managed by DeltaQuick, allowing save data to be shared correctly across the launcher and every chapter.
+> Submitting a pull request does not guarantee immediate inclusion. Your contribution may need to be reviewed before it appears in DeltaQuick.
 
+### 3. Install the Mod
 
-Troubleshooting & Additional Info
-- Touch Controls: Built-in. Swipe right during gameplay to open the configuration menu.
-* **Crashes:** For a detailed guide on solving common crashes, visit: [Troubleshooting Guide](./crash%20fixes/README.md)
-### Credits
-- Toby Fox: Deltarune
-- Angela Puzzle: Deltarune Android Port (2021-2026)
-- ateskit: Deltarune Android (2025-2026)
-- Booker: Deltaquick Android + Porting tools
-- mattiw: Base touch controls
-- jockeholm: Undertale Android port 2018
-- grossley: UndertaleModTool
-- Google & YoYo Games: Android Studio / Game Maker Studio
+Once your ZIP archive is ready, you can install it directly through DeltaQuick.
+
+1. Open DeltaQuick.
+2. Navigate to the file selection or mod installation interface.
+3. Press **Select Folder**.
+4. Choose **Select ZIP File**.
+5. Locate and select `mymod.zip`.
+6. Wait for the installation to finish.
+7. Launch the game and test your modification.
+
+![DeltaQuick ZIP Installation](./photos/zip_installation.png)
+
+*Suggested screenshot: Show the Select Folder button and Select ZIP File option.*
+
+> [!WARNING]
+> **Configure the game before installing the mod.**
+>
+> The base game must already be configured in DeltaQuick. Installing a mod before completing the initial game setup may cause installation errors or prevent the game from launching correctly.
+
+---
+
+## Troubleshooting
+
+If your mod does not work as expected, check the following:
+
+- **Incorrect DeltaQuick version:** Confirm that you are running version 1.3.20 or later.
+- **Incorrect archive structure:** Ensure that `game.droid` and the chapter directories are located at the ZIP archive's root.
+- **Missing chapter files:** Check that every required chapter directory and asset is included.
+- **Missing GameChange extension:** Confirm that the extension has been injected into the appropriate `game.droid` files.
+- **Incorrect chapter selector:** Verify the Android case in `obj_CHAPTER_SELECT_Create_0`.
+- **Incorrect chapter switching script:** Verify the implementation of `gml_GlobalScript_scr_chapterswitch`.
+- **Game not configured:** Complete the initial game setup before installing your modification.
+- **Missing assets:** Ensure that the modification includes any additional files it requires.
+
+For more detailed troubleshooting instructions, see the [Crash Fixes Guide](./crash%20fixes/README.md).
+
+---
+
+## Additional Resources
+
+- [DeltaQuick on Google Play](https://play.google.com/store/apps/details?id=com.bookerpuzzle.deltaquick&pcampaignid=web_share)
+- [DeltaQuick Porting Tools Repository](https://github.com/BookerRues9/Deltaquick-porting-tools)
+- [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool)
+- [Crash Fixes Guide](./crash%20fixes/README.md)
+- [Google Play Games Setup Guide](./play%20games/README.md)
+
+---
+
+## Credits
+
+- **Toby Fox** — Creator of Deltarune and Undertale.
+- **Angela Puzzle** — Deltarune Android port (2021–2026).
+- **ateskit** — Deltarune Android (2025–2026).
+- **Booker** — DeltaQuick Android launcher and porting tools.
+- **mattiw** — Base touch controls.
+- **jockeholm** — Undertale Android port (2018).
+- **grossley** — UndertaleModTool.
+- **Google and YoYo Games** — Android development tools and GameMaker Studio.
+
+---
+
+*DeltaQuick Porting Tools — Making Deltarune modding on Android easier.*
