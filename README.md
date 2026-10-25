@@ -2,7 +2,9 @@ Where to Find Mods
 
 Once a mod has been added to the DeltaQuick mod catalog, you can find it directly in the app's Mods tab.
 
-photos/mods_tab.png
+<p align="center">
+  <img src="./photos/mods_tab.png" alt="DeltaQuick Mods tab Overview" width="360">
+</p>
 
 Browse available modifications directly from DeltaQuick and find new content to install.
 
