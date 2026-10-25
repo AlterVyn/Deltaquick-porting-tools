@@ -329,8 +329,6 @@ Only include chapters and files that your mod actually supports. If your modific
 
 ![Example Mod ZIP Structure](./img/mod_zip_structure.png)
 
-*Suggested screenshot: Show the contents of the completed ZIP archive.*
-
 ### 2. Submit Your Mod
 
 To make your modification appear in DeltaQuick's **Mods** tab, you must add an entry for it to the repository's mod catalog JSON file and submit a pull request.
@@ -347,9 +345,9 @@ Follow these steps:
 6. Open a pull request against the original repository.
 7. Wait for the changes to be reviewed and merged.
 
-**Mod catalog JSON file:** [INSERT_JSON_FILE_LINK_HERE]
+**Mod catalog JSON file:** [https://github.com/BookerRues9/Deltaquick-porting-tools/blob/main/mods.json]
 
-**Example mod download:** [INSERT_MOD_DOWNLOAD_LINK_HERE]
+**Example mod download:** [https://gamejolt.com/games/android-deltranslate-project/1086889]
 
 > [!NOTE]
 > Follow the existing JSON schema exactly. The required fields and download URL format depend on the repository's current catalog implementation.
