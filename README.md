@@ -2,13 +2,16 @@
 
 This guide contains the steps and tools necessary to port modifications to **Deltaquick** (Deltarune Android Launcher).
 > [!IMPORTANT]
-> GUIDE UPDATED 11/07/2026**
-> This guide was updated on 11/07/2026 to describe and use the new optimizations in DeltaQuick 1.3.8 and later.
+> GUIDE UPDATED 25/10/2026**
+> This guide was updated on  25/10/2026 to describe and use the new optimizations in DeltaQuick 1.3.20 and later.
 
+> [!ATTENTION]
+> Update 1.3.20 changes the file system; previous versions of this guide will not work with version 1.3.20. This change was made to facilitate mod portability and ensure compatibility with future chapters.
 
 > [!CAUTION]
 > **IMPORTANT:** This document is intended for **advanced users** who are familiar with modifying Deltarune/Undertale.
-> **IMPORTANT2:** This only works with mods for Deltarune Chapter 3 and 4, and Chapter 5 Latest Steam version. The demo and survey program versions are not compatible.
+> **IMPORTANT2:** This only works with mods for Deltarune Chapter 3 and 4, and Chapter 5 Latest Steam version.
+>  **The demo and survey program versions are not compatible.**
 
 ---
 
@@ -30,11 +33,10 @@ To proceed, you will need the following tools:
 
 * [Deltarune PC Windows Steam Version For setting deltaquick](https://store.steampowered.com/app/1671210/DELTARUNE/)
 * [UndertaleModTool](https://github.com/UnderminersTeam/UndertaleModTool)
-* [APK Editor Studio](https://qwertycube.com/apk-editor-studio/)
 * [Deltaquick](https://play.google.com/store/apps/details?id=com.bookerpuzzle.deltaquick&pcampaignid=web_share)
 * [UndertaleModTool Scripts](https://github.com/BookerRues9/Deltaquick-porting-tools/tree/main/scripts)
 
-**Requirement:** Ensure Deltaquick is configured and updated to **version 1.1.9** or higher.
+**Requirement:** Ensure Deltaquick is configured and updated to **version 1.3.20** or higher.
 
 ---
 
@@ -49,12 +51,11 @@ DeltaQuick stores all extracted game files inside its private application direct
 | Path | Description |
 |------|-------------|
 | `/data/user/0/com.bookerdev.deltaquick/files/deltarune_save_files/` | Stores Deltarune save files and game progress. |
-| `/data/user/0/com.bookerdev.deltaquick/files/xdelta/` | Stores XDelta patches used for game fixes and updates. |
-| `/data/user/0/com.bookerdev.deltaquick/files/game.droid` | Loose base `game.droid` file. This file has priority over all `.pack` files. |
-| `/data/user/0/com.bookerdev.deltaquick/files/chapter1_windows/` → `/chapter5_windows/` | Contains the extracted assets for each Deltarune chapter. |
-| `/data/user/0/com.bookerdev.deltaquick/files/chapterX_windows/game.droid` | Loose chapter `game.droid` file. These files have priority over the corresponding `.pack` files. |
-| `/data/user/0/com.bookerdev.deltaquick/files/packs/` | Contains the chapter APK packs. These are only used when no loose `game.droid` file is available. |
-| `/data/user/0/com.bookerdev.deltaquick/files/mus/` | Global directory containing all music files used by the game. |
+| `/data/user/0/com.bookerdev.deltaquick/files/game/` | Stores game data used for game fixes and updates. |
+| `/data/user/0/com.bookerdev.deltaquick/files/game/` | Loose base `game.droid` file. This file has priority over all `.pack` files. |
+| `/data/user/0/com.bookerdev.deltaquick/files/game/chapter1_windows/` → `/chapter5_windows/` | Contains the extracted assets for each Deltarune chapter. |
+| `/data/user/0/com.bookerdev.deltaquick/files/game/chapterX_windows/game.droid` | Loose chapter `game.droid` file.
+| `/data/user/0/com.bookerdev.deltaquick/files/game/mus/` | Global directory containing all music files used by the game. |
 
 > [!NOTE]
 > DeltaQuick loads game files using the following priority:
