@@ -11,7 +11,7 @@ This guide explains how to enable **Google Play Games achievements** in your Del
 
 First, download the provided UndertaleModTool script.
 
-**Download:** [Here](./DELTAQUICK.csx)
+**Download:** [Here](./deltaquick.csx)
 
 
 ---
