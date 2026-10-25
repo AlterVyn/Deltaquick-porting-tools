@@ -130,7 +130,7 @@ This section explains how to integrate `game_change_android()` into your modific
 
 First, download the required UndertaleModTool script:
 
-**[Download the GameChange Extension](./scripts/PRIMERO%20ESTE%20GAME%20CHANGE.csx)**
+**[Download the GameChange Extension](./scripts/game.csx)**
 
 Replace the placeholder link with the actual download URL.
 
