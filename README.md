@@ -98,9 +98,7 @@ The following paths describe the intended directory layout. Replace `chapterX_wi
 
 The Save Manager allows you to manage the extracted game files used by DeltaQuick.
 
-![DeltaQuick Save Manager Overview](./photos/save_manager.png)
-
-*Suggested screenshot: Replace `./photos/save_manager.png` with the actual path of your screenshot if it differs.*
+![DeltaQuick Save Manager Overview](./img/savemanager.png)
 
 ### Editing Game Files
 
@@ -146,7 +144,7 @@ Once you have downloaded the script:
 
 The extension should now be injected into the selected game file.
 
-![UndertaleModTool Extension Injection](./photos/gamechange_injection.png)
+![UndertaleModTool Extension Injection](./img/inyect.png)
 
 *Suggested screenshot: Show the script execution process in UndertaleModTool.*
 
@@ -329,7 +327,7 @@ The chapter directories should also include any additional assets required by yo
 
 Only include chapters and files that your mod actually supports. If your modification requires a particular base game version or additional files, clearly document those requirements.
 
-![Example Mod ZIP Structure](./photos/mod_zip_structure.png)
+![Example Mod ZIP Structure](./img/mod_zip_structure.png)
 
 *Suggested screenshot: Show the contents of the completed ZIP archive.*
 
@@ -370,9 +368,8 @@ Once your ZIP archive is ready, you can install it directly through DeltaQuick.
 6. Wait for the installation to finish.
 7. Launch the game and test your modification.
 
-![DeltaQuick ZIP Installation](./photos/zip_installation.png)
+![DeltaQuick ZIP Installation](./img/zip_installation.png)
 
-*Suggested screenshot: Show the Select Folder button and Select ZIP File option.*
 
 > [!WARNING]
 > **Configure the game before installing the mod.**
