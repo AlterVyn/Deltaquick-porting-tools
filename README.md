@@ -2,9 +2,7 @@ Where to Find Mods
 
 Once a mod has been added to the DeltaQuick mod catalog, you can find it directly in the app's Mods tab.
 
-<p align="center">
-  <img src="./photos/mods_tab.png" alt="DeltaQuick Mods tab Overview" width="360">
-</p>
+photos/mods_tab.png
 
 Browse available modifications directly from DeltaQuick and find new content to install.
 
@@ -16,6 +14,9 @@ Mods must be added to the official mod catalog before they appear in this tab.
 
 
 # DeltaQuick Porting Guide
+
+> **Languages:** English | [Español](README.es.md) | [Português (Brasil)](README.pt-BR.md) | [Français](README.fr.md)
+
 
 <p align="center">
   <strong>Port, package, and share Deltarune modifications for Android.</strong><br>
@@ -177,6 +178,8 @@ The extension should now be injected into the selected game file.
 <p align="center">
   <img src="./photos/inyect.png" alt="UndertaleModTool Extension Injection" width="420">
 </p>
+
+*Suggested screenshot: Show the script execution process in UndertaleModTool.*
 
 ### 2. Modify the Chapter Selector
 
